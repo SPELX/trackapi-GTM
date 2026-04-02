@@ -10,7 +10,7 @@ ___INFO___
 
 {
   "type": "TAG",
-  "id": "cvt_trackapi_analytics",
+  "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
   "displayName": "TrackAPI Analytics",
@@ -239,11 +239,6 @@ ___WEB_PERMISSIONS___
     "isRequired": true
   }
 ]
-
-
-___TESTS___
-
-scenarios: []
 
 
 ___NOTES___
