@@ -10,14 +10,14 @@ ___INFO___
 
 {
   "type": "TAG",
-  "id": "cvt_trackapi_tag",
+  "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
   "displayName": "TrackAPI Analytics",
-  "categories": ["ANALYTICS", "CONVERSION"],
+  "categories": ["ANALYTICS", "CONVERSIONS"],
   "brand": {
-    "displayName": "TrackAPI",
-    "id": "brand_trackapi"
+    "id": "brand_dummy",
+    "displayName": "TrackAPI"
   },
   "description": "Carrega o SDK do TrackAPI e inicializa o tracking server-side (CAPI). Envia eventos para Meta CAPI, TikTok Events API e GA4 Measurement Protocol bypassando ad blockers via CNAME first-party.",
   "containerContexts": [
@@ -239,6 +239,11 @@ ___WEB_PERMISSIONS___
     "isRequired": true
   }
 ]
+
+
+___TESTS___
+
+scenarios: []
 
 
 ___NOTES___
