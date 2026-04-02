@@ -14,7 +14,7 @@ ___INFO___
   "version": 1,
   "securityGroups": [],
   "displayName": "TrackAPI Analytics",
-  "categories": ["ANALYTICS", "CONVERSIONS"],
+  "categories": ["ANALYTICS", "CONVERSION"],
   "brand": {
     "displayName": "TrackAPI",
     "id": "brand_trackapi"
