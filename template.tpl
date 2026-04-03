@@ -19,7 +19,7 @@ ___INFO___
     "id": "brand_trackapi",
     "displayName": "TrackAPI"
   },
-  "description": "Carrega o SDK do TrackAPI e inicializa o tracking server-side (CAPI). Envia eventos para Meta CAPI, TikTok Events API e GA4 Measurement Protocol bypassando ad blockers via CNAME first-party.",
+  "description": "Loads the TrackAPI SDK and initializes server-side tracking (CAPI). Sends conversion events to Meta CAPI, TikTok Events API and GA4 Measurement Protocol, bypassing ad blockers via CNAME first-party tracking.",
   "containerContexts": [
     "WEB"
   ],
@@ -35,8 +35,8 @@ ___TEMPLATE_PARAMETERS___
     "name": "projectId",
     "displayName": "Project ID",
     "simpleValueType": true,
-    "help": "Encontre o Project ID no dashboard TrackAPI em Configurações do Projeto. Formato: proj_abc123",
-    "notSetText": "ex: proj_abc123",
+    "help": "Find your Project ID in the TrackAPI dashboard under Project Settings. Format: proj_abc123",
+    "notSetText": "e.g. proj_abc123",
     "valueValidators": [
       {
         "type": "NON_EMPTY"
@@ -46,23 +46,23 @@ ___TEMPLATE_PARAMETERS___
   {
     "type": "TEXT",
     "name": "endpoint",
-    "displayName": "Endpoint (CNAME próprio)",
+    "displayName": "Endpoint (custom CNAME)",
     "simpleValueType": true,
-    "help": "URL do CNAME configurado no seu domínio (ex: https://analytics.seusite.com.br). Deixe em branco para usar o endpoint padrão — recomendamos configurar o CNAME para melhor qualidade de matching.",
-    "notSetText": "https://analytics.seusite.com.br (recomendado)"
+    "help": "Your custom CNAME URL (e.g. https://analytics.yoursite.com). Leave blank to use the default endpoint. We recommend setting up a CNAME for better matching quality.",
+    "notSetText": "https://analytics.yoursite.com (recommended)"
   },
   {
     "type": "CHECKBOX",
     "name": "autoPageView",
-    "checkboxText": "Disparar PageView automaticamente no init",
+    "checkboxText": "Fire PageView automatically on init",
     "simpleValueType": true,
     "defaultValue": true,
-    "help": "Envia um evento PageView logo após o init(). Desative apenas se você controlar PageViews manualmente via dataLayer.push({ event: 'PageView' })."
+    "help": "Sends a PageView event right after init(). Disable only if you control PageViews manually via dataLayer.push({ event: 'PageView' })."
   },
   {
     "type": "CHECKBOX",
     "name": "debug",
-    "checkboxText": "Modo debug (logs no console do browser)",
+    "checkboxText": "Debug mode (browser console logs)",
     "simpleValueType": true,
     "defaultValue": false
   }
@@ -83,17 +83,15 @@ var autoPageView = data.autoPageView !== false;
 var debugMode = !!data.debug;
 
 if (!projectId) {
-  log('TrackAPI: projectId é obrigatório. Configure o Project ID na tag GTM.');
+  log('TrackAPI: projectId is required. Set the Project ID in the GTM tag.');
   data.gtmOnFailure();
   return;
 }
 
-// URL do SDK: CNAME próprio tem prioridade, fallback para endpoint padrão
 var sdkUrl = endpoint
   ? endpoint + '/sdk.js'
   : 'https://api.trackapi.app.br/sdk.js';
 
-// Se o SDK já foi carregado por outra tag, apenas chama init novamente
 var existingSDK = copyFromWindow('TrackAPI');
 if (existingSDK && existingSDK.init) {
   callInWindow('TrackAPI.init', {
@@ -106,8 +104,6 @@ if (existingSDK && existingSDK.init) {
   return;
 }
 
-// Carrega SDK de forma assíncrona — não bloqueia renderização
-// O cache token 'trackapi-sdk' garante que o script não seja injetado duas vezes
 injectScript(sdkUrl, function() {
   var sdk = copyFromWindow('TrackAPI');
   if (sdk && sdk.init) {
@@ -119,11 +115,11 @@ injectScript(sdkUrl, function() {
     });
     data.gtmOnSuccess();
   } else {
-    log('TrackAPI: SDK carregado mas TrackAPI.init não encontrado. Verifique a URL do endpoint.');
+    log('TrackAPI: SDK loaded but TrackAPI.init not found. Check the endpoint URL.');
     data.gtmOnFailure();
   }
 }, function() {
-  log('TrackAPI: falha ao carregar SDK de ' + sdkUrl + '. Verifique o endpoint e o CNAME.');
+  log('TrackAPI: failed to load SDK from ' + sdkUrl + '. Check the endpoint and CNAME.');
   data.gtmOnFailure();
 }, 'trackapi-sdk');
 
@@ -243,36 +239,19 @@ ___WEB_PERMISSIONS___
 
 ___NOTES___
 
-## TrackAPI Analytics — GTM Tag Template
+TrackAPI Analytics - GTM Tag Template
 
-Carrega e inicializa o TrackAPI SDK para tracking server-side via CAPI (Conversions API).
+Loads and initializes the TrackAPI SDK for server-side tracking via CAPI (Conversions API).
 
-### Setup rápido
+Setup:
+1. Add this tag in GTM (type: TrackAPI Analytics)
+2. Enter your Project ID (TrackAPI dashboard > Settings)
+3. If you have a CNAME, enter the Endpoint (e.g. https://analytics.yoursite.com)
+4. Trigger: All Pages
+5. Publish
 
-1. Adicione esta tag no GTM (tipo: TrackAPI Analytics)
-2. Preencha o **Project ID** (dashboard TrackAPI → Configurações)
-3. Se tiver CNAME, preencha o **Endpoint** (ex: https://analytics.seusite.com.br)
-4. Trigger: **All Pages**
-5. Publique
+Deduplication with Facebook Pixel:
+1. Also import the TrackAPI - Event ID variable template
+2. In the Facebook Pixel tag, set Event ID to {{TrackAPI - Event ID}}
 
-### Deduplicação com Facebook Pixel (recomendado)
-
-Para deduplicar PageView e conversões entre browser Pixel e CAPI:
-
-1. Importe também o template **TrackAPI - Event ID** (variável)
-2. Na tag do Facebook Pixel, configure o campo **Event ID** com a variável {{TrackAPI - Event ID}}
-
-Isso garante que browser Pixel e CAPI enviem o mesmo event_id → Meta contabiliza uma única conversão.
-
-### Eventos via dataLayer
-
-Após o init, o SDK escuta o dataLayer automaticamente. Para disparar eventos:
-
-  dataLayer.push({ event: 'Lead', email: 'user@email.com' });
-  dataLayer.push({ event: 'Purchase', value: 297, currency: 'BRL', transaction_id: 'ORDER_123' });
-
-O SDK intercepta, envia via CAPI server-side e aplica SHA-256 em email/phone automaticamente.
-
-### Documentação completa
-
-https://trackapi.app.br/docs/sdk
+Documentation: https://trackapi.app.br/docs/sdk
