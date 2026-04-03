@@ -137,27 +137,15 @@ ___WEB_PERMISSIONS___
         {
           "key": "urls",
           "value": {
-            "type": 1,
+            "type": 2,
             "listItem": [
               {
-                "type": 2,
-                "mapKey": ["url"],
-                "mapValue": [
-                  {
-                    "type": 1,
-                    "string": "https://api.trackapi.app.br/sdk.js"
-                  }
-                ]
+                "type": 1,
+                "string": "https://api.trackapi.app.br/sdk.js"
               },
               {
-                "type": 2,
-                "mapKey": ["url"],
-                "mapValue": [
-                  {
-                    "type": 1,
-                    "string": "https://*.*/sdk.js"
-                  }
-                ]
+                "type": 1,
+                "string": "https://*.*/sdk.js"
               }
             ]
           }
@@ -165,7 +153,7 @@ ___WEB_PERMISSIONS___
       ]
     },
     "clientAnnotations": {
-      "isEditedByTemplateCreator": true
+      "isEditedByUser": true
     },
     "isRequired": true
   },
@@ -179,26 +167,84 @@ ___WEB_PERMISSIONS___
         {
           "key": "keys",
           "value": {
-            "type": 1,
+            "type": 2,
             "listItem": [
               {
-                "type": 2,
-                "mapKey": ["key", "read", "write", "execute"],
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  },
+                  {
+                    "type": 1,
+                    "string": "execute"
+                  }
+                ],
                 "mapValue": [
-                  {"type": 1, "string": "TrackAPI"},
-                  {"type": 8, "boolean": true},
-                  {"type": 8, "boolean": false},
-                  {"type": 8, "boolean": false}
+                  {
+                    "type": 1,
+                    "string": "TrackAPI"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  }
                 ]
               },
               {
-                "type": 2,
-                "mapKey": ["key", "read", "write", "execute"],
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "key"
+                  },
+                  {
+                    "type": 1,
+                    "string": "read"
+                  },
+                  {
+                    "type": 1,
+                    "string": "write"
+                  },
+                  {
+                    "type": 1,
+                    "string": "execute"
+                  }
+                ],
                 "mapValue": [
-                  {"type": 1, "string": "TrackAPI.init"},
-                  {"type": 8, "boolean": false},
-                  {"type": 8, "boolean": false},
-                  {"type": 8, "boolean": true}
+                  {
+                    "type": 1,
+                    "string": "TrackAPI.init"
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": false
+                  },
+                  {
+                    "type": 8,
+                    "boolean": true
+                  }
                 ]
               }
             ]
@@ -207,7 +253,7 @@ ___WEB_PERMISSIONS___
       ]
     },
     "clientAnnotations": {
-      "isEditedByTemplateCreator": true
+      "isEditedByUser": true
     },
     "isRequired": true
   },
@@ -222,15 +268,13 @@ ___WEB_PERMISSIONS___
           "key": "environments",
           "value": {
             "type": 1,
-            "listItem": [
-              {
-                "type": 1,
-                "string": "debug"
-              }
-            ]
+            "string": "debug"
           }
         }
       ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
     },
     "isRequired": true
   }
